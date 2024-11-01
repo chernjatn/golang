@@ -1,0 +1,26 @@
+syntax = "proto3"
+
+message ProductBadge{
+    string card_project = 1;
+    string date_from = 2;
+    string date_to = 3;
+    string description = 4;
+    uint32 id = 5;
+    repeated uint32 products = 6;
+    string promo_link = 7;
+    uint32 sort = 8;
+    uint32 type = 9;
+    uint32 type_value = 10;
+}
+
+message GetProductBadgeRequest {
+    uint32 region_ecom_id = 1;
+    repeated uint32 products = 2;
+    string channel = 3;
+    bool with_by_products = 4;
+    bool all = 5;
+}
+
+message GetProductBadgeResponse {
+    ProductBadge item = 1;
+}
