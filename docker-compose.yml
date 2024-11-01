@@ -1,0 +1,106 @@
+#
+version: "3.4"
+
+x-common-env: &common-env
+  ECOM_HOST: "http://ws.erkapharm.com:8990/ecom/hs/"
+  REDIS_HOST: "127.0.0.1:6379"
+  DB_HOST: "10.21.3.79:3306"
+  IMPORT_INTERVAL_MINUTES: 10
+
+x-conf-superapteka: &conf-superapteka
+  <<: *common-env
+  ECOM_USER: "SuperApteka"
+  ECOM_PASSWORD: "A66VID"
+  INVENTORY_DB: "2"
+  SHOP_FLUSHURL: "https://superapteka.ru/api/stores/on-stocks-changed"
+  DB_DATABASE: "ultrashop_superapteka"
+  DB_USERNAME: "ultrashop_superapteka"
+  DB_PASSWORD: "EUGg9hSXMxPP"
+
+x-conf-oz: &conf-oz
+  <<: *common-env
+  ECOM_USER: "SiteOz"
+  ECOM_PASSWORD: "AV74D8"
+  INVENTORY_DB: "4"
+  SHOP_FLUSHURL: "https://ozerki.ru/api/stores/on-stocks-changed"
+  DB_DATABASE: "shop"
+  DB_USERNAME: "shop"
+  DB_PASSWORD: "JPRjcDTBcZ5OouzhkP6KCuB7"
+
+x-conf-sf: &conf-sf
+  <<: *common-env
+  ECOM_USER: "Samson"
+  ECOM_PASSWORD: "VP9TM4"
+  INVENTORY_DB: "5"
+  SHOP_FLUSHURL: "https://samson-pharma.ru/api/stores/on-stocks-changed"
+  DB_DATABASE: "ultrashop_samson"
+  DB_USERNAME: "ultrashop_samson"
+  DB_PASSWORD: "MaszbVSE37Ev"
+
+x-conf-st: &conf-st
+  <<: *common-env
+  ECOM_USER: "StoletovSite"
+  ECOM_PASSWORD: "VKR435"
+  INVENTORY_DB: "6"
+  SHOP_FLUSHURL: "https://stoletov.ru/api/stores/on-stocks-changed"
+  DB_DATABASE: "ultrashop_stoletov"
+  DB_USERNAME: "ultrashop_stoletov"
+  DB_PASSWORD: "7PZzdyFYGkz9"
+
+services:
+  invsvc_superapteka:
+    build: .
+    command: "/app/invsvc"
+    restart: always
+    environment:
+      <<: *conf-superapteka
+    ports:
+      - "8042:8000"
+  invsvc_oz:
+    build: .
+    command: "/app/invsvc"
+    restart: always
+    environment:
+      <<: *conf-oz
+    ports:
+      - "8044:8000"
+  invsvc_sf:
+    build: .
+    command: "/app/invsvc"
+    restart: always
+    environment:
+      <<: *conf-sf
+    ports:
+      - "8045:8000"
+  invsvc_st:
+    build: .
+    command: "/app/invsvc"
+    restart: always
+    environment:
+      <<: *conf-st
+    ports:
+      - "8046:8000"
+  impsvc_superapteka:
+    build: .
+    command: "/app/impsvc"
+    restart: always
+    environment:
+      <<: *conf-superapteka
+  impsvc_oz:
+    build: .
+    command: "/app/impsvc"
+    restart: always
+    environment:
+      <<: *conf-oz
+  impsvc_sf:
+    build: .
+    command: "/app/impsvc"
+    restart: always
+    environment:
+      <<: *conf-sf
+  impsvc_st:
+    build: .
+    command: "/app/impsvc"
+    restart: always
+    environment:
+      <<: *conf-st

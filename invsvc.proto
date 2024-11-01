@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package inventory;
+
+option go_package = "internal/invsvc";
+
+service Invsvc {
+    rpc GetInventory(GetInventoryRequest) returns (GetInventoryResponse) {}
+    rpc GetRegionInventory(GetRegionInventoryRequest) returns (GetRegionInventoryResponse) {}
+    rpc GetRegionMaxInventory(GetRegionInventoryRequest) returns (GetRegionMaxInventoryResponse) {}
+    rpc GetRegionLastInventory(GetRegionInventoryRequest) returns (GetRegionLastInventoryResponse) {}
+    rpc GetRegionStoreHas(GetRegionInventoryRequest) returns (GetRegionStoreHasResponse) {}
+    rpc GetRegionStoreHasCnt(GetRegionInventoryRequest) returns (GetRegionStoreHasCntResponse) {}
+}
+
+enum InventorySourceType {
+    MAIN = 0;
+    DARKSTORE = 3;
+}
+
+
+message ProductInventory{
+    uint32 quantity = 1;
+    uint64 price = 2;
+    uint64 discount_price = 3;
+    uint64 sum = 4;
+    uint64 discount_sum = 5;
+    string valid_date = 6;
+}
+
+message ProductInventoryFull{
+    uint32 quantity = 1;
+    uint64 price = 2;
+    uint64 discount_price = 3;
+    uint64 sum = 4;
+    uint64 discount_sum = 5;
+    string valid_date = 6;
+    uint32 is_id = 7;
+    uint32 store_id = 8;
+    InventorySourceType is_type = 9;
+    bool is_varies = 10;
+}
+
+message GetInventoryRequest {
+    uint32 is_id = 1;
+    uint32 region_id = 2;
+    uint32 product_id = 3;
+    uint32 quantity = 4;
+}
+
+message GetInventoryResponse {
+    ProductInventory item = 1;
+}
+
+message GetRegionInventoryRequest{
+    uint32 region_id = 1;
+    uint32 product_id = 2;
+    uint32 quantity = 3;
+}
+
+message GetRegionInventoryResponse{
+    repeated ProductInventoryFull items = 1;
+}
+
+message GetRegionMaxInventoryResponse{
+    ProductInventoryFull item = 1;
+}
+
+message GetRegionLastInventoryResponse{
+    ProductInventoryFull item = 1;
+}
+
+message GetRegionStoreHasResponse{
+    map<uint32, uint32> items = 1;
+}
+
+message GetRegionStoreHasCntResponse{
+    uint32 cnt = 1;
+}
